@@ -130,6 +130,49 @@ public class MiniPainterApp extends Application {
         
         // Add canvas to the layout
         layout.setCenter(canvas);
+        
+        
+        
+        
+        // ************************** Respond to the selection events on the combo boxes ******************//
+        
+        
+        // Combo box for shapes
+        shapes.valueProperty().addListener((obs, oldItem, newItem) -> {
+        	if (shapes.getValue().equals("Dot"))
+        		shapeID = 1;
+        	else if (shapes.getValue().equals("Line"))
+        		shapeID = 2;
+        	else if (shapes.getValue().equals("Rectangle"))
+        		shapeID = 3;
+        	else if (shapes.getValue().equals("Circle"))
+        		shapeID = 4;
+        });
+        
+        
+        // Combo box for sizes
+        sizes.valueProperty().addListener((obs, oldItem, newItem) -> {
+        	if (sizes.getValue().equals("1"))
+        		g.setLineWidth(1);
+        	else if (sizes.getValue().equals("2"))
+        		g.setLineWidth(5);
+        	else if (sizes.getValue().equals("3"))
+        		g.setLineWidth(10);
+        	else if (sizes.getValue().equals("4"))
+        		g.setLineWidth(15);
+        	else if (sizes.getValue().equals("5"))
+        		g.setLineWidth(20);
+        	else if (sizes.getValue().equals("6"))
+        		g.setLineWidth(25);
+        	else if (sizes.getValue().equals("7"))
+        		g.setLineWidth(30);
+        	else if (sizes.getValue().equals("8"))
+        		g.setLineWidth(35);
+        	else if (sizes.getValue().equals("9"))
+        		g.setLineWidth(40);
+        	
+        	
+        });
 		
 		
 		//Instantiate a scene object 
