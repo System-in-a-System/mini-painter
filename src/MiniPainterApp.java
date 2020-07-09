@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -173,7 +174,16 @@ public class MiniPainterApp extends Application {
         	
         	
         });
-		
+        
+        
+        
+        // Respond to the mouse events on the canvas (drawing process)
+        canvas.setOnMousePressed( e -> mousePressed(e) );
+        canvas.setOnMouseDragged( e -> mouseDragged(e) );
+        canvas.setOnMouseReleased( e -> mouseReleased(e) );
+        
+        
+        
 		
 		//Instantiate a scene object 
 	    Scene scene = new Scene(layout, 700, 500);  
@@ -191,6 +201,156 @@ public class MiniPainterApp extends Application {
 	
 	
 	
+	
+	//---------------------------------Assisting methods for drawing--------------------------------//
+	
+	
+	// Assisting method to be called when the user presses down the mouse within the canvas area
+    public void mousePressed(MouseEvent evt) {
+
+    	g.setStroke(colorPicker.getValue());
+    	
+    	// Ignore mouse presses if the drawing is already active
+    	if (dragging == true)  
+            return;            
+    	
+    	// Locate the coordinates where the starting click took place
+        int x = (int)evt.getX();   
+        int y = (int)evt.getY();   
+        
+        
+        // Make sure the starting click is within the canvas
+        int width = (int)canvas.getWidth();   
+        int height = (int)canvas.getHeight(); 
+
+        
+        // If the click was within the canvas...
+        if (x > 3 && x < width - 56 && y > 3 && y < height - 3) {
+            // ... start drawing
+        	
+        	// Save the startig coordinates to global varialbes
+            prevX = x;
+            prevY = y;
+            
+            
+            // Adjust drawing to the chosen shapes:
+            
+            if(shapeID == 2) {
+            	line.setStartX(prevX);
+                line.setStartY(prevY);
+            }
+            
+            if(shapeID == 3) {
+            	rectangle.setX(prevX);                
+                rectangle.setY(prevY);
+            }
+            
+            if(shapeID == 4) {
+            	circle.setCenterX(prevX);
+                circle.setCenterY(prevY);
+            }
+  
+            
+            // "Switch" dragging to true
+            dragging = true;
+        }
+
+    } 
+
+    
+    
+
+    // Assisting method to be called when the user releases the mouse button
+    public void mouseReleased(MouseEvent evt) {
+    	
+    	// Locate the point of release
+    	int x = (int)evt.getX();   
+        int y = (int)evt.getY();   
+
+        // Makes sure the point of release is within the canvas
+        int width = (int)canvas.getWidth();    
+        int height = (int)canvas.getHeight();  
+
+        
+        // If the point of release is within the canvas
+        if (x > 3 && x < width - 56 && y > 3 && y < height - 3) {
+            //... finalize the drawing object
+        	
+        	// Locate the final coordinates
+            finalX = x;
+            finalY = y;
+            
+            
+            // Adjust drawing to the chosen shapes
+            if(shapeID == 2) 
+            	g.strokeLine(line.getStartX(), line.getStartY(), line.getEndX(), line.getEndY());
+            if(shapeID == 3) {
+            	rectangle.setWidth(Math.abs((finalX - rectangle.getX())));
+             	rectangle.setHeight(Math.abs((finalY - rectangle.getY())));
+             	g.fillRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+                g.strokeRect(rectangle.getX(), rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+            }
+            if(shapeID == 4) {
+            	circle.setRadius((Math.abs(finalX) - circle.getCenterX()) + Math.abs(finalY) - circle.getCenterY() / 2);
+            	g.fillOval(circle.getCenterX(), circle.getCenterY(), circle.getRadius(), circle.getRadius());
+                g.strokeOval(circle.getCenterX(), circle.getCenterY(), circle.getRadius(), circle.getRadius());
+
+            }
+            	
+        }
+    	
+        // "Switch" dragging back to falses
+    	dragging = false;
+    }
+
+
+    
+    
+    // Assisting method to be called when the user is dragging the mouse while mouse button is pressed down
+    public void mouseDragged(MouseEvent evt) {
+
+    	// If the mouse is not moving, return
+        if (dragging == false)
+            return;  
+
+        
+        // Keep track on the mouse position coordinates
+        double x = evt.getX();   
+        double y = evt.getY();   
+        
+        
+        // Make sure coordinates are not reaching out of the canvas area 
+        if (x < 3)                          
+            x = 3;                           
+        if (x > canvas.getWidth() - 57)       
+            x = (int)canvas.getWidth() - 57;
+
+        if (y < 3)                          
+            y = 3;                           
+        if (y > canvas.getHeight() - 4)       
+            y = canvas.getHeight() - 4;
+
+        
+        
+        // Dynamic drawing for dot shape and line shape
+        if(shapeID == 1) 
+        	g.strokeLine(prevX, prevY, x, y);    
+        else if (shapeID == 2) {      	
+        	line.setEndX(x);
+            line.setEndY(y);      
+        }
+        	
+        
+        // Coordinates update        
+        prevX = x;  
+        prevY = y;
+
+    } 
+	
+	
+	
+    
+    
 	// Program starting point
 	public static void main(String[] args) {
 		
