@@ -3,8 +3,13 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -53,9 +58,62 @@ public class MiniPainterApp extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
+		
 		// Instantiate a BorderPane layout
 		BorderPane layout = new BorderPane();
 		layout.setPadding(new Insets(5, 5, 5, 5));
+		
+		
+		
+		// ------------------------Setting up a horizontal box that holds combo boxes --------------------------//
+		
+		// Instantiate horizontal box for combo boxes
+		HBox horizontalBox = new HBox();
+					
+		
+		// ComboBox for shape choice
+		Label shapesLabel = new Label(" Shape: ");
+		ComboBox<String> shapes = new ComboBox<>();
+		shapes.getItems().addAll("Dot", "Line", "Rectangle", "Circle");
+				
+		// ComboBox for size choice
+		Label sizesLabel = new Label(" Size:  ");
+		ComboBox<String> sizes = new ComboBox<>();
+		sizes.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "8", "9");
+					
+		// Adjust color Picker for colors choice			
+		Label colorsLabel = new Label(" Color:  ");
+		colorPicker.setValue(Color.BLACK);
+								
+		// Add clear button
+		Button clearButton = new Button("Clear the mess");
+					
+					
+					
+					
+		// Populate horizontal box 
+		horizontalBox.getChildren().addAll(shapesLabel, shapes, 
+		    								sizesLabel, sizes, 
+											colorsLabel, colorPicker,
+											clearButton);
+					
+		// Set inner margins within the horizontal box
+		HBox.setMargin(shapesLabel, new Insets(3,3,3,3));
+		HBox.setMargin(shapes, new Insets(3,3,3,3));
+		HBox.setMargin(sizesLabel, new Insets(3,3,3,3));
+		HBox.setMargin(sizes, new Insets(3,3,3,3));
+		HBox.setMargin(colorsLabel, new Insets(3,3,3,3));
+		HBox.setMargin(colorPicker, new Insets(3,3,3,3));
+		HBox.setMargin(clearButton, new Insets(3,3,3,3));
+					
+					
+		
+		// Add horizontal box to the layout
+		layout.setTop(horizontalBox);
+		
+		
+		
+		
 		
 		//Instantiate a scene object 
 	    Scene scene = new Scene(layout, 700, 500);  
