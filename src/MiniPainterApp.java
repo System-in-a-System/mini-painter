@@ -184,7 +184,16 @@ public class MiniPainterApp extends Application {
         
         
         
+        // Respond to the clear button click
+        clearButton.setOnAction( e -> {
+        	clearCanvas();
+        });
+        
+        
 		
+        
+        // -------------- Set the scene --------------- // 
+        
 		//Instantiate a scene object 
 	    Scene scene = new Scene(layout, 700, 500);  
 	      
@@ -347,9 +356,29 @@ public class MiniPainterApp extends Application {
 
     } 
 	
-	
-	
     
+    
+	
+    // Method to clean the canvas 
+    public void clearCanvas() {
+
+        int width = (int)canvas.getWidth();    
+        int height = (int)canvas.getHeight();  
+
+        g.setFill(Color.WHITE);
+        g.fillRect(0,0,width,height);
+
+    } 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // -------------------------------------------------------------------------------------------------------------- //
     
 	// Program starting point
 	public static void main(String[] args) {
