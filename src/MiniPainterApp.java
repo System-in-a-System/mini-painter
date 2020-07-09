@@ -114,6 +114,23 @@ public class MiniPainterApp extends Application {
 		
 		
 		
+		//---------------------------------- Setting up a canvas ------------------------------------------//
+		
+		// Instantiate Canvas  
+        canvas = new Canvas(600,400);
+        g = canvas.getGraphicsContext2D();
+        
+        // Set style
+        int width = (int)canvas.getWidth();    
+        int height = (int)canvas.getHeight();  
+
+        g.setFill(Color.WHITE);
+        g.fillRect(0,0,width,height);
+        	        
+        
+        // Add canvas to the layout
+        layout.setCenter(canvas);
+		
 		
 		//Instantiate a scene object 
 	    Scene scene = new Scene(layout, 700, 500);  
